@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WooCommerce Product Table Plugin Comparison</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ── HERO ─────────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-badge">⚡ Feature Matrix · March 2025</div>
+  <h1>WooCommerce Product Table<br><span>Plugin Comparison</span></h1>
+  <p>
+    Side-by-side feature matrix of 11 WooCommerce product table plugins across 72 features.
+    The <strong>Ratio</strong> column shows — for each feature — what share of plugins support
+    it overall, among free tiers, and among paid/pro tiers.
+  </p>
+  <div class="hero-meta">
+    <div class="legend-item"><span class="pill free">Free</span> Free tier</div>
+    <div class="legend-item"><span class="pill pro">Pro</span> Paid / Pro tier</div>
+    <div class="legend-item"><span class="pill ours">★ ProductBay</span> Our plugin</div>
+    <div class="legend-item"><span class="leg-check">✔</span> Available</div>
+    <div class="legend-item"><span class="leg-dash">—</span> Not available</div>
+  </div>
+</div>
+
+<!-- ── CONTROLS ──────────────────────────────────────────────────────────── -->
+<div class="controls">
+  <label>Search:</label>
+  <input type="text" class="search-input" id="featureSearch" placeholder="e.g. AJAX, variation, export…">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="Display &amp; Layout">Display</button>
+  <button class="filter-btn" data-filter="Columns">Columns</button>
+  <button class="filter-btn" data-filter="Search &amp; Filter">Search &amp; Filter</button>
+  <button class="filter-btn" data-filter="Cart">Cart</button>
+  <button class="filter-btn" data-filter="Variations">Variations</button>
+  <button class="filter-btn" data-filter="Design">Design</button>
+  <button class="filter-btn" data-filter="Integration">Integration</button>
+  <button class="filter-btn" data-filter="Access">Access</button>
+</div>
+
+<!-- ── TABLE ─────────────────────────────────────────────────────────────── -->
+<div class="table-wrapper">
+  <table id="compTable">
+    <thead>
+      <tr>
+        <!-- Sticky feature + description column -->
+        <th class="col-feat">Feature &amp; Description</th>
+
+        <!-- Barn2 — PRO only (col 0) -->
+        <th colspan="1">
+          <div class="plugin-hdr">
+            <div class="plugin-name">Barn2</div>
+            <div class="tier-strip">
+              <span class="tier-cell proonly" data-sort-ci="0" style="width:100%">PRO only <span class="sort-icon">⇅</span></span>
+            </div>
+          </div>
+        </th>
+
+        <!-- WBW — Free (col 1) + Pro (col 2) -->
+        <th colspan="2">
+          <div class="plugin-hdr">
+            <div class="plugin-name">WBW</div>
+            <div class="tier-strip">
+              <span class="tier-cell free"   data-sort-ci="1">Free <span class="sort-icon">⇅</span></span>
+              <span class="tier-cell pro"    data-sort-ci="2">Pro  <span class="sort-icon">⇅</span></span>
+            </div>
+          </div>
+        </th>
+
+        <!-- WCPT — Free (col 3) + Pro (col 4) -->
+        <th colspan="2">
+          <div class="plugin-hdr">
+            <div class="plugin-name">WCPT</div>
+            <div class="tier-strip">
+              <span class="tier-cell free"   data-sort-ci="3">Free <span class="sort-icon">⇅</span></span>
+              <span class="tier-cell pro"    data-sort-ci="4">Pro  <span class="sort-icon">⇅</span></span>
+            </div>
+          </div>
+        </th>
+
+        <!-- WebFix — Free (col 5) + Pro (col 6) -->
+        <th colspan="2">
+          <div class="plugin-hdr">
+            <div class="plugin-name">WebFix</div>
+            <div class="tier-strip">
+              <span class="tier-cell free"   data-sort-ci="5">Free <span class="sort-icon">⇅</span></span>
+              <span class="tier-cell pro"    data-sort-ci="6">Pro  <span class="sort-icon">⇅</span></span>
+            </div>
+          </div>
+        </th>
+
+        <!-- JustTables — Free (col 7) + Pro (col 8) -->
+        <th colspan="2">
+          <div class="plugin-hdr">
+            <div class="plugin-name">JustTables</div>
+            <div class="tier-strip">
+              <span class="tier-cell free"   data-sort-ci="7">Free <span class="sort-icon">⇅</span></span>
+              <span class="tier-cell pro"    data-sort-ci="8">Pro  <span class="sort-icon">⇅</span></span>
+            </div>
+          </div>
+        </th>
+
+        <!-- WooT — Free (col 9) + Pro (col 10) -->
+        <th colspan="2">
+          <div class="plugin-hdr">
+            <div class="plugin-name">WooT</div>
+            <div class="tier-strip">
+              <span class="tier-cell free"   data-sort-ci="9">Free  <span class="sort-icon">⇅</span></span>
+              <span class="tier-cell pro"    data-sort-ci="10">Pro  <span class="sort-icon">⇅</span></span>
+            </div>
+          </div>
+        </th>
+
+        <!-- Acowebs — Free only (col 11) -->
+        <th colspan="1">
+          <div class="plugin-hdr">
+            <div class="plugin-name">Acowebs</div>
+            <div class="tier-strip">
+              <span class="tier-cell freeonly" data-sort-ci="11" style="width:100%">Free only <span class="sort-icon">⇅</span></span>
+            </div>
+          </div>
+        </th>
+
+        <!-- Codup — PRO only (col 12) -->
+        <th colspan="1">
+          <div class="plugin-hdr">
+            <div class="plugin-name">Codup</div>
+            <div class="tier-strip">
+              <span class="tier-cell proonly" data-sort-ci="12" style="width:100%">PRO only <span class="sort-icon">⇅</span></span>
+            </div>
+          </div>
+        </th>
+
+        <!-- WPExperts — PRO only (col 13) -->
+        <th colspan="1">
+          <div class="plugin-hdr">
+            <div class="plugin-name">WPExperts</div>
+            <div class="tier-strip">
+              <span class="tier-cell proonly" data-sort-ci="13" style="width:100%">PRO only <span class="sort-icon">⇅</span></span>
+            </div>
+          </div>
+        </th>
+
+        <!-- WPClever — Free (col 14) + Pro (col 15) -->
+        <th colspan="2">
+          <div class="plugin-hdr">
+            <div class="plugin-name">WPClever</div>
+            <div class="tier-strip">
+              <span class="tier-cell free"   data-sort-ci="14">Free <span class="sort-icon">⇅</span></span>
+              <span class="tier-cell pro"    data-sort-ci="15">Pro  <span class="sort-icon">⇅</span></span>
+            </div>
+          </div>
+        </th>
+
+        <!-- ProductBay ★ — Free only (col 16) — OUR PLUGIN -->
+        <th colspan="1" class="our-hdr">
+          <div class="plugin-hdr">
+            <div class="plugin-name">ProductBay ★</div>
+            <div class="tier-strip">
+              <span class="tier-cell ours" data-sort-ci="16" style="width:100%">Free <span class="sort-icon">⇅</span></span>
+            </div>
+          </div>
+        </th>
+
+        <!-- Support Ratio column -->
+        <th class="ratio-th">
+          <div class="ratio-th-inner">
+            <div class="ratio-th-title">Support Ratio</div>
+            <div class="ratio-th-sub">How many plugins support this feature</div>
+            <div class="ratio-th-legend">
+              <div class="rlp all"><span class="dot all"></span>All</div>
+              <div class="rlp free"><span class="dot free"></span>Free</div>
+              <div class="rlp pro"><span class="dot pro"></span>Pro</div>
+            </div>
+          </div>
+          <div class="ratio-th-tiers">
+            <div class="rtt all">All</div>
+            <div class="rtt free">Free</div>
+            <div class="rtt pro">Pro</div>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────────── -->
+<div class="footer">
+  Data sourced from official plugin sites &amp; WordPress.org · March 2025 ·
+  <a href="https://barn2.com/wordpress-plugins/woocommerce-product-table/" target="_blank">Barn2</a> ·
+  <a href="https://woobewoo.com/product-table-for-woocommerce-2/" target="_blank">WBW</a> ·
+  <a href="https://wcproducttable.com/" target="_blank">WCPT</a> ·
+  <a href="https://wordpress.org/plugins/multiple-products-to-cart-for-woocommerce/" target="_blank">WebFix Lab</a> ·
+  <a href="https://wordpress.org/plugins/just-tables/" target="_blank">JustTables</a> ·
+  <a href="https://wooproducttable.com/" target="_blank">WooProductTable</a> ·
+  <a href="https://wordpress.org/plugins/product-table-for-woocommerce/" target="_blank">Acowebs</a> ·
+  <a href="https://woocommerce.com/products/product-tables-for-woocommerce/" target="_blank">Codup</a> ·
+  <a href="https://woocommerce.com/products/bulk-order-form-for-woocommerce/" target="_blank">WPExperts</a> ·
+  <a href="https://wordpress.org/plugins/wpc-product-table/" target="_blank">WPClever</a> ·
+  <a href="https://wordpress.org/plugins/productbay/" target="_blank">ProductBay</a>
+</div>
+
+<!-- data.js must load before main.js -->
+<script src="data.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
