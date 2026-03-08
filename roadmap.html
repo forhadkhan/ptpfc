@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProductBay — Development Roadmap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ────────────────────────────────────────────────────── */
+    :root {
+      --bg:         #f4f5fb;
+      --surface:    #ffffff;
+      --surface2:   #f0f1f8;
+      --border:     #e2e5f0;
+      --border2:    #c9cde3;
+      --text:       #16193b;
+      --muted:      #6b748f;
+      --accent:     #4154f1;
+      --accent-bg:  #edeffe;
+      --accent-mid: #c7cdfb;
+
+      --v1: #16a34a; --v1-bg: #f0fdf4; --v1-border: #bbf7d0;
+      --v2: #0369a1; --v2-bg: #f0f9ff; --v2-border: #bae6fd;
+      --v3: #7c3aed; --v3-bg: #f5f3ff; --v3-border: #ddd6fe;
+      --v4: #b45309; --v4-bg: #fffbeb; --v4-border: #fde68a;
+      --vf: #475569; --vf-bg: #f8fafc; --vf-border: #cbd5e1;
+
+      --f: 'Inter', system-ui, -apple-system, sans-serif;
+
+      /* timeline geometry */
+      --tl-pad: 60px;   /* left padding of whole timeline */
+      --tl-x:   20px;   /* center x of the main rule (from left edge) */
+      --sub-x:  42px;   /* center x of sub-dot (absolute, from timeline left) */
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--f);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── PAGE ──────────────────────────────────────────────────────── */
+    .page { max-width: 880px; margin: 0 auto; padding: 48px 28px 100px; }
+
+    /* ── HERO ──────────────────────────────────────────────────────── */
+    .hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 40px;
+      margin-bottom: 48px;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent);
+      background: var(--accent-bg); border: 1px solid var(--accent-mid);
+      padding: 4px 12px; border-radius: 100px; margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: clamp(22px, 4vw, 34px); font-weight: 800;
+      letter-spacing: -.03em; color: var(--text);
+      margin-bottom: 10px; line-height: 1.15;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p {
+      color: var(--muted); font-size: 14px;
+      max-width: 560px; line-height: 1.7; margin-bottom: 24px;
+    }
+    .stats { display: flex; flex-wrap: wrap; gap: 10px; }
+    .stat {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 18px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .stat-num { font-size: 22px; font-weight: 800; letter-spacing: -.03em; }
+    .stat-num.g { color: var(--v1); }
+    .stat-num.b { color: var(--accent); }
+    .stat-num.o { color: var(--v4); }
+    .stat-lbl { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+    /* ── CALLOUT ───────────────────────────────────────────────────── */
+    .callout {
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px; padding: 14px 18px;
+      font-size: 13px; color: var(--muted); line-height: 1.65;
+      margin-bottom: 44px;
+    }
+    .callout strong { color: var(--text); }
+
+    /* ══════════════════════════════════════════════════════════════
+       TIMELINE
+    ══════════════════════════════════════════════════════════════ */
+    .timeline {
+      position: relative;
+      padding-left: var(--tl-pad);
+    }
+
+    /* main vertical rule */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: calc(var(--tl-x) - 1px); /* center of main dot */
+      top: 10px; bottom: 10px;
+      width: 2px;
+      background: linear-gradient(to bottom,
+        var(--v1) 0%, var(--v2) 30%,
+        var(--v3) 60%, var(--v4) 82%,
+        var(--vf) 100%);
+      border-radius: 2px;
+    }
+
+    /* ── VERSION GROUP ─────────────────────────────────────────── */
+    .tl-group { margin-bottom: 44px; position: relative; }
+
+    /* big dot for the version */
+    .tl-major-dot {
+      position: absolute;
+      left: calc(-1 * var(--tl-pad) + var(--tl-x) - 9px);
+      top: 8px;
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 3px solid var(--bg);
+      z-index: 2;
+    }
+    .tl-major-dot.v1 { background: var(--v1); box-shadow: 0 0 0 2px var(--v1); }
+    .tl-major-dot.v2 { background: var(--v2); box-shadow: 0 0 0 2px var(--v2); }
+    .tl-major-dot.v3 { background: var(--v3); box-shadow: 0 0 0 2px var(--v3); }
+    .tl-major-dot.v4 { background: var(--v4); box-shadow: 0 0 0 2px var(--v4); }
+    .tl-major-dot.vf { background: var(--vf); box-shadow: 0 0 0 2px var(--vf); }
+
+    /* version label row */
+    .tl-version-label {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 14px; flex-wrap: wrap;
+    }
+    .version-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: .07em;
+      text-transform: uppercase; padding: 4px 12px;
+      border-radius: 100px; border: 1.5px solid; white-space: nowrap;
+    }
+    .version-tag.v1 { color: var(--v1); background: var(--v1-bg); border-color: var(--v1-border); }
+    .version-tag.v2 { color: var(--v2); background: var(--v2-bg); border-color: var(--v2-border); }
+    .version-tag.v3 { color: var(--v3); background: var(--v3-bg); border-color: var(--v3-border); }
+    .version-tag.v4 { color: var(--v4); background: var(--v4-bg); border-color: var(--v4-border); }
+    .version-tag.vf { color: var(--vf); background: var(--vf-bg); border-color: var(--vf-border); }
+
+    .tl-version-title { font-size: 16px; font-weight: 700; color: var(--text); }
+    .tl-version-sub   { font-size: 12px; color: var(--muted); }
+    .tl-version-dur {
+      margin-left: auto; font-size: 11px; color: var(--muted);
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 3px 10px; border-radius: 100px; white-space: nowrap;
+    }
+
+    /* ── SUB-ITEMS (features) ─────────────────────────────────── */
+    .tl-items {
+      position: relative;
+      padding-left: 32px; /* offset from group left (which is already indented) */
+      display: flex; flex-direction: column; gap: 0;
+    }
+
+    /* vertical connector from version dot down through all items */
+    .tl-items::before {
+      content: '';
+      position: absolute;
+      left: 8px; /* center of sub-dot */
+      top: 0; bottom: 0;
+      width: 1.5px;
+      background: var(--border2);
+      border-radius: 2px;
+    }
+
+    .tl-item {
+      position: relative;
+      padding: 10px 0 10px 20px;
+    }
+
+    /* small dot for each feature */
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: 1px; top: 18px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--border2);
+      z-index: 1;
+    }
+    .tl-item.v1::before { border-color: var(--v1); background: var(--v1-bg); }
+    .tl-item.v2::before { border-color: var(--v2); background: var(--v2-bg); }
+    .tl-item.v3::before { border-color: var(--v3); background: var(--v3-bg); }
+    .tl-item.v4::before { border-color: var(--v4); background: var(--v4-bg); }
+    .tl-item.vf::before { border-color: var(--vf); background: var(--vf-bg); }
+
+    /* card inside each item */
+    .tl-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex; align-items: flex-start; gap: 12px;
+      transition: box-shadow .15s, transform .15s;
+    }
+    .tl-card:hover {
+      box-shadow: 0 3px 14px rgba(65,84,241,.07);
+      transform: translateY(-1px);
+    }
+
+    .tl-icon { font-size: 16px; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+
+    .tl-body { flex: 1; min-width: 0; }
+    .tl-sub-ver {
+      font-size: 10px; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
+    }
+    .tl-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .tl-desc { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+
+    .tl-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+
+    .priority {
+      font-size: 10px; font-weight: 700; letter-spacing: .04em;
+      text-transform: uppercase; padding: 2px 8px; border-radius: 100px;
+    }
+    .priority.high { background: #fee2e2; color: #b91c1c; }
+    .priority.med  { background: #fef9c3; color: #854d0e; }
+    .priority.low  { background: #f1f5f9; color: #64748b; }
+
+    .adoption-wrap { display: flex; align-items: center; gap: 5px; width: 90px; }
+    .adoption-track {
+      flex: 1; height: 4px; background: var(--border);
+      border-radius: 100px; overflow: hidden;
+    }
+    .adoption-fill { height: 100%; border-radius: 100px; }
+    .adoption-fill.v1 { background: var(--v1); }
+    .adoption-fill.v2 { background: var(--v2); }
+    .adoption-fill.v3 { background: var(--v3); }
+    .adoption-fill.v4 { background: var(--v4); }
+    .adoption-fill.vf { background: var(--vf); }
+    .adoption-pct { font-size: 10px; font-weight: 700; color: var(--muted); width: 26px; text-align: right; flex-shrink:0; }
+
+    /* ── FUTURE SECTION ─────────────────────────────────────────── */
+    .future-label {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--vf);
+      margin-bottom: 6px;
+    }
+    .future-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ── GROUP FOOTER ───────────────────────────────────────────── */
+    .tl-group-footer {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      margin-top: 6px; padding: 8px 12px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; margin-left: 32px;
+    }
+    .tl-group-footer span { font-size: 12px; color: var(--muted); }
+    .tl-group-footer strong { color: var(--text); }
+
+    /* ── PAGE FOOTER ────────────────────────────────────────────── */
+    .page-footer {
+      margin-top: 64px; padding-top: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center; font-size: 12px; color: var(--muted);
+    }
+    .page-footer a { color: var(--accent); text-decoration: none; }
+    .page-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .page { padding: 28px 16px 80px; }
+      .hero { padding: 24px; }
+      .tl-meta { display: none; }
+    }
+  </style>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">🗺 Development Roadmap</div>
+    <h1>ProductBay <em>Feature Roadmap</em></h1>
+    <p>Built from a head-to-head analysis of 10 competing plugins across 72 features. Each sprint targets the most widely-adopted missing features first.</p>
+    <div class="stats">
+      <div class="stat"><span class="stat-num g">34</span><div class="stat-lbl">Features<br>Shipped</div></div>
+      <div class="stat"><span class="stat-num b">36</span><div class="stat-lbl">On the<br>Roadmap</div></div>
+      <div class="stat"><span class="stat-num o">5</span><div class="stat-lbl">Unique to<br>ProductBay</div></div>
+    </div>
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div class="callout">
+    <strong>Prioritisation:</strong> Each missing feature is ranked by how many of the 10 competing plugins already offer it. Features with ≥ 60% adoption are table-stakes and scheduled first. Sub-version numbers (e.g. v1.1.1) mark the exact patch release each feature ships in.
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline">
+
+    <!-- ══════════════════ v1.1.0 ══════════════════ -->
+    <div class="tl-group">
+      <div class="tl-major-dot v1"></div>
+      <div class="tl-version-label">
+        <span class="version-tag v1">v 1.1.0</span>
+        <div>
+          <div class="tl-version-title">The Essentials Sprint</div>
+          <div class="tl-version-sub">Closing the highest-adoption gaps — core display &amp; pagination</div>
+        </div>
+        <span class="tl-version-dur">~3 weeks</span>
+      </div>
+      <div class="tl-items">
+
+        <div class="tl-item v1">
+          <div class="tl-card">
+            <span class="tl-icon">↕️</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.1.1</div>
+              <div class="tl-name">Column Sorting</div>
+              <div class="tl-desc">Sort ascending / descending by clicking any column header.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority high">Critical</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v1" style="width:94%"></div></div>
+                <span class="adoption-pct">94%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v1">
+          <div class="tl-card">
+            <span class="tl-icon">⬇️</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.1.1</div>
+              <div class="tl-name">Default Sort Order Setting</div>
+              <div class="tl-desc">Set a default sort — price ascending, newest first, etc.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority high">Critical</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v1" style="width:94%"></div></div>
+                <span class="adoption-pct">94%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v1">
+          <div class="tl-card">
+            <span class="tl-icon">📄</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.1.2</div>
+              <div class="tl-name">AJAX Pagination</div>
+              <div class="tl-desc">Navigate product pages without a full page reload.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority high">Critical</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v1" style="width:82%"></div></div>
+                <span class="adoption-pct">82%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v1">
+          <div class="tl-card">
+            <span class="tl-icon">🔢</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.1.2</div>
+              <div class="tl-name">Products Per Page Control</div>
+              <div class="tl-desc">Admin-configurable number of product rows shown per page.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority high">Critical</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v1" style="width:94%"></div></div>
+                <span class="adoption-pct">94%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v1">
+          <div class="tl-card">
+            <span class="tl-icon">➕</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.1.3</div>
+              <div class="tl-name">Quantity Selector in Table</div>
+              <div class="tl-desc">Numeric stepper directly inside each product row.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority high">Critical</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v1" style="width:94%"></div></div>
+                <span class="adoption-pct">94%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v1">
+          <div class="tl-card">
+            <span class="tl-icon">🔍</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.1.3</div>
+              <div class="tl-name">SKU Search</div>
+              <div class="tl-desc">Search for products specifically by their SKU code.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v1" style="width:53%"></div></div>
+                <span class="adoption-pct">53%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="tl-group-footer">
+        <span class="version-tag v1">v 1.1.0</span>
+        <span><strong>6 features</strong> · 82–94% competitor adoption</span>
+      </div>
+    </div><!-- /v1.1.0 -->
+
+
+    <!-- ══════════════════ v1.2.0 ══════════════════ -->
+    <div class="tl-group">
+      <div class="tl-major-dot v2"></div>
+      <div class="tl-version-label">
+        <span class="version-tag v2">v 1.2.0</span>
+        <div>
+          <div class="tl-version-title">The Discovery Sprint</div>
+          <div class="tl-version-sub">Advanced filtering, richer column types &amp; lazy loading</div>
+        </div>
+        <span class="tl-version-dur">~3 weeks</span>
+      </div>
+      <div class="tl-items">
+
+        <div class="tl-item v2">
+          <div class="tl-card">
+            <span class="tl-icon">🏷️</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.2.1</div>
+              <div class="tl-name">Filter by Attribute / Tag</div>
+              <div class="tl-desc">Filter by WooCommerce attributes (color, size) and custom tags.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority high">High</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v2" style="width:53%"></div></div>
+                <span class="adoption-pct">53%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v2">
+          <div class="tl-card">
+            <span class="tl-icon">⚙️</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.2.1</div>
+              <div class="tl-name">Faceted / Multi-filter</div>
+              <div class="tl-desc">Stack multiple active filters simultaneously for precise results.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority high">High</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v2" style="width:53%"></div></div>
+                <span class="adoption-pct">53%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v2">
+          <div class="tl-card">
+            <span class="tl-icon">📦</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.2.2</div>
+              <div class="tl-name">Custom Field / Meta Columns</div>
+              <div class="tl-desc">Surface ACF or any custom meta field as a table column.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v2" style="width:53%"></div></div>
+                <span class="adoption-pct">53%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v2">
+          <div class="tl-card">
+            <span class="tl-icon">🗂️</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.2.2</div>
+              <div class="tl-name">Custom Taxonomy Columns</div>
+              <div class="tl-desc">Show brands, certifications, or any taxonomy as a column.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v2" style="width:53%"></div></div>
+                <span class="adoption-pct">53%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v2">
+          <div class="tl-card">
+            <span class="tl-icon">⭐</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.2.3</div>
+              <div class="tl-name">Rating / Reviews Column</div>
+              <div class="tl-desc">Display star rating or review count as a sortable column.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v2" style="width:47%"></div></div>
+                <span class="adoption-pct">47%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v2">
+          <div class="tl-card">
+            <span class="tl-icon">🔄</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.2.3</div>
+              <div class="tl-name">Lazy Load / Load More Button</div>
+              <div class="tl-desc">Progressive product loading without pagination.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v2" style="width:41%"></div></div>
+                <span class="adoption-pct">41%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="tl-group-footer">
+        <span class="version-tag v2">v 1.2.0</span>
+        <span><strong>6 features</strong> · filtering depth and column types</span>
+      </div>
+    </div><!-- /v1.2.0 -->
+
+
+    <!-- ══════════════════ v1.3.0 ══════════════════ -->
+    <div class="tl-group">
+      <div class="tl-major-dot v3"></div>
+      <div class="tl-version-label">
+        <span class="version-tag v3">v 1.3.0</span>
+        <div>
+          <div class="tl-version-title">The Polish Sprint</div>
+          <div class="tl-version-sub">Design system, themes, Gutenberg &amp; page builders</div>
+        </div>
+        <span class="tl-version-dur">~4 weeks</span>
+      </div>
+      <div class="tl-items">
+
+        <div class="tl-item v3">
+          <div class="tl-card">
+            <span class="tl-icon">🧩</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.3.1</div>
+              <div class="tl-name">Page Builder Compatible</div>
+              <div class="tl-desc">Native support for Elementor, Divi, and Beaver Builder.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority high">High</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v3" style="width:59%"></div></div>
+                <span class="adoption-pct">59%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v3">
+          <div class="tl-card">
+            <span class="tl-icon">💅</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.3.1</div>
+              <div class="tl-name">Custom CSS Support</div>
+              <div class="tl-desc">Write your own CSS rules for full styling control.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority high">High</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v3" style="width:53%"></div></div>
+                <span class="adoption-pct">53%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v3">
+          <div class="tl-card">
+            <span class="tl-icon">⚡</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.3.2</div>
+              <div class="tl-name">Gutenberg Block</div>
+              <div class="tl-desc">Insert a product table via the WordPress block editor.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority high">High</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v3" style="width:35%"></div></div>
+                <span class="adoption-pct">35%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v3">
+          <div class="tl-card">
+            <span class="tl-icon">🎨</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.3.2</div>
+              <div class="tl-name">Pre-built Templates</div>
+              <div class="tl-desc">Ready-made designs to get started fast without custom CSS.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v3" style="width:41%"></div></div>
+                <span class="adoption-pct">41%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v3">
+          <div class="tl-card">
+            <span class="tl-icon">🌙</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.3.3</div>
+              <div class="tl-name">Dark / Preset Color Themes</div>
+              <div class="tl-desc">Built-in dark, light, and neutral color presets.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v3" style="width:29%"></div></div>
+                <span class="adoption-pct">29%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v3">
+          <div class="tl-card">
+            <span class="tl-icon">🔭</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.3.3</div>
+              <div class="tl-name">Quick View Popup</div>
+              <div class="tl-desc">Inline product details modal without navigating away.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v3" style="width:41%"></div></div>
+                <span class="adoption-pct">41%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v3">
+          <div class="tl-card">
+            <span class="tl-icon">🖼️</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.3.4</div>
+              <div class="tl-name">Lightbox for Product Images</div>
+              <div class="tl-desc">Click a product image to open a full-size lightbox.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v3" style="width:24%"></div></div>
+                <span class="adoption-pct">24%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v3">
+          <div class="tl-card">
+            <span class="tl-icon">🏪</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 1.3.4</div>
+              <div class="tl-name">Shop / Category Override</div>
+              <div class="tl-desc">Replace the default WooCommerce shop grid with a table.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v3" style="width:35%"></div></div>
+                <span class="adoption-pct">35%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="tl-group-footer">
+        <span class="version-tag v3">v 1.3.0</span>
+        <span><strong>8 features</strong> · design polish and WordPress ecosystem</span>
+      </div>
+    </div><!-- /v1.3.0 -->
+
+
+    <!-- ══════════════════ v2.0.0 ══════════════════ -->
+    <div class="tl-group">
+      <div class="tl-major-dot v4"></div>
+      <div class="tl-version-label">
+        <span class="version-tag v4">v 2.0.0</span>
+        <div>
+          <div class="tl-version-title">The Power Sprint</div>
+          <div class="tl-version-sub">Advanced cart, access control, B2B, variations &amp; exports</div>
+        </div>
+        <span class="tl-version-dur">~6 weeks</span>
+      </div>
+      <div class="tl-items">
+
+        <div class="tl-item v4">
+          <div class="tl-card">
+            <span class="tl-icon">🛒</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 2.0.1</div>
+              <div class="tl-name">Mini / Floating Cart Widget</div>
+              <div class="tl-desc">Live cart sidebar or widget on the product table page.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v4" style="width:35%"></div></div>
+                <span class="adoption-pct">35%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v4">
+          <div class="tl-card">
+            <span class="tl-icon">🔐</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 2.0.1</div>
+              <div class="tl-name">User Role Restrictions</div>
+              <div class="tl-desc">Show or hide the table/columns based on user role or login.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v4" style="width:24%"></div></div>
+                <span class="adoption-pct">24%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v4">
+          <div class="tl-card">
+            <span class="tl-icon">🏭</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 2.0.2</div>
+              <div class="tl-name">Wholesale / B2B Pricing</div>
+              <div class="tl-desc">Works with wholesale pricing plugins; B2B role-based control.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v4" style="width:35%"></div></div>
+                <span class="adoption-pct">35%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v4">
+          <div class="tl-card">
+            <span class="tl-icon">↔️</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 2.0.2</div>
+              <div class="tl-name">Each Variation as Separate Row</div>
+              <div class="tl-desc">Expand each product variation into its own dedicated table row.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority med">Medium</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v4" style="width:29%"></div></div>
+                <span class="adoption-pct">29%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v4">
+          <div class="tl-card">
+            <span class="tl-icon">💳</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 2.0.3</div>
+              <div class="tl-name">One-Page / Direct Checkout</div>
+              <div class="tl-desc">Complete purchase without leaving the product table page.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority low">Low</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v4" style="width:18%"></div></div>
+                <span class="adoption-pct">18%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v4">
+          <div class="tl-card">
+            <span class="tl-icon">💾</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 2.0.3</div>
+              <div class="tl-name">Product Export (CSV / Print)</div>
+              <div class="tl-desc">Export the displayed product list as CSV or printer-friendly view.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority low">Low</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v4" style="width:6%"></div></div>
+                <span class="adoption-pct">6%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v4">
+          <div class="tl-card">
+            <span class="tl-icon">📤</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 2.0.4</div>
+              <div class="tl-name">Import / Export Table Settings</div>
+              <div class="tl-desc">Save and transfer table configurations across sites.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority low">Low</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v4" style="width:6%"></div></div>
+                <span class="adoption-pct">6%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v4">
+          <div class="tl-card">
+            <span class="tl-icon">♻️</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 2.0.4</div>
+              <div class="tl-name">Subscription Products Support</div>
+              <div class="tl-desc">Compatible with WooCommerce Subscriptions product type.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority low">Low</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v4" style="width:6%"></div></div>
+                <span class="adoption-pct">6%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item v4">
+          <div class="tl-card">
+            <span class="tl-icon">🌐</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">v 2.0.5</div>
+              <div class="tl-name">Multisite Compatible</div>
+              <div class="tl-desc">Works on WordPress multisite / network installations.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority low">Low</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill v4" style="width:12%"></div></div>
+                <span class="adoption-pct">12%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="tl-group-footer">
+        <span class="version-tag v4">v 2.0.0</span>
+        <span><strong>9 features</strong> · B2B, access control, advanced cart &amp; exports</span>
+      </div>
+    </div><!-- /v2.0.0 -->
+
+
+    <!-- ══════════════════ FUTURE ══════════════════ -->
+    <div class="tl-group">
+      <div class="tl-major-dot vf"></div>
+      <div class="tl-version-label">
+        <span class="version-tag vf">Future</span>
+        <div>
+          <div class="tl-version-title">Under Consideration</div>
+          <div class="tl-version-sub">Ideas being explored — not yet committed or scheduled</div>
+        </div>
+        <span class="tl-version-dur">v 3.0+</span>
+      </div>
+      <div class="tl-items">
+
+        <div class="tl-item vf">
+          <div class="tl-card">
+            <span class="tl-icon">🔗</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">Under evaluation</div>
+              <div class="tl-name">WooCommerce Product Add-Ons Integration</div>
+              <div class="tl-desc">Integrates with the official WooCommerce Product Add-Ons plugin so add-on fields render inside the table row.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority low">Low</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill vf" style="width:24%"></div></div>
+                <span class="adoption-pct">24%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item vf">
+          <div class="tl-card">
+            <span class="tl-icon">🕐</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">Under evaluation</div>
+              <div class="tl-name">Previously Ordered Products</div>
+              <div class="tl-desc">Show a list of products the current logged-in user has purchased before — useful for repeat B2B orders.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority low">Low</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill vf" style="width:6%"></div></div>
+                <span class="adoption-pct">6%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item vf">
+          <div class="tl-card">
+            <span class="tl-icon">📊</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">Under evaluation</div>
+              <div class="tl-name">Sticky Total Price Row</div>
+              <div class="tl-desc">Sticky summary row showing a running total of currently selected product prices.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority low">Low</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill vf" style="width:12%"></div></div>
+                <span class="adoption-pct">12%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item vf">
+          <div class="tl-card">
+            <span class="tl-icon">📋</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">Under evaluation</div>
+              <div class="tl-name">Merge / Combined Columns</div>
+              <div class="tl-desc">Combine multiple data fields into one cell — e.g. name + short description.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority low">Low</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill vf" style="width:18%"></div></div>
+                <span class="adoption-pct">18%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item vf">
+          <div class="tl-card">
+            <span class="tl-icon">📂</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">Under evaluation</div>
+              <div class="tl-name">Section / Group by Category</div>
+              <div class="tl-desc">Display products grouped under visible category section headers within a single table.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority low">Low</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill vf" style="width:12%"></div></div>
+                <span class="adoption-pct">12%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item vf">
+          <div class="tl-card">
+            <span class="tl-icon">🔑</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">Under evaluation</div>
+              <div class="tl-name">Login-only Columns</div>
+              <div class="tl-desc">Restrict specific columns (e.g. wholesale price) so only logged-in users can see them.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority low">Low</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill vf" style="width:18%"></div></div>
+                <span class="adoption-pct">18%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item vf">
+          <div class="tl-card">
+            <span class="tl-icon">📱</span>
+            <div class="tl-body">
+              <div class="tl-sub-ver">Under evaluation</div>
+              <div class="tl-name">Grid / Table View Switcher</div>
+              <div class="tl-desc">Let customers toggle between table and product grid view on the frontend.</div>
+            </div>
+            <div class="tl-meta">
+              <span class="priority low">Low</span>
+              <div class="adoption-wrap">
+                <div class="adoption-track"><div class="adoption-fill vf" style="width:6%"></div></div>
+                <span class="adoption-pct">6%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="tl-group-footer">
+        <span class="version-tag vf">Future</span>
+        <span><strong>7 ideas</strong> · not yet committed — community feedback will direct priority</span>
+      </div>
+    </div><!-- /future -->
+
+  </div><!-- /timeline -->
+
+  <div class="page-footer">
+    Adoption rates based on 10 competing WooCommerce product table plugins · March 2025
+  </div>
+
+</div><!-- /page -->
+</body>
+</html>

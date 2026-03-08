@@ -116,7 +116,7 @@ body {
   gap: 10px;
   flex-wrap: wrap;
   position: sticky;
-  top: 0;
+  top: 52px; /* sits directly below the shared nav bar */
   z-index: 10;
 }
 .controls label { font-size: 14px; color: var(--muted); font-weight: 500; white-space: nowrap; }
