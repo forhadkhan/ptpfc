@@ -32,7 +32,7 @@
 
   const css = `
     #site-nav {
-      position: sticky; top: 0; z-index: 200;
+      position: relative;
       background: #ffffff;
       border-bottom: 1px solid #e2e5f0;
       box-shadow: 0 1px 8px rgba(0,0,0,.05);

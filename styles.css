@@ -74,7 +74,7 @@ body {
   margin-bottom: 18px;
 }
 .hero h1 {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(28px, 3.8vw, 46px);
   font-weight: 800;
   line-height: 1.1;
@@ -116,7 +116,7 @@ body {
   gap: 10px;
   flex-wrap: wrap;
   position: sticky;
-  top: 52px; /* sits directly below the shared nav bar */
+  top: 0;
   z-index: 10;
 }
 .controls label { font-size: 14px; color: var(--muted); font-weight: 500; white-space: nowrap; }
